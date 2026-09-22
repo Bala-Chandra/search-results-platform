@@ -2,9 +2,9 @@
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import SearchBar from 'src/components/SearchBar.vue';
-import FilterPanel from 'src/components/FilterPanel.vue';
-import ResultsList from 'src/components/ResultsList.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import FilterPanel from '@/components/FilterPanel.vue';
+import ResultsList from '@/components/ResultsList.vue';
 
 import { useSearchStore } from '@/stores/search.store';
 
@@ -164,64 +164,68 @@ const results = computed(() => {
 </script>
 
 <template>
-  <q-page padding>
-    <div class="row justify-center">
-      <div class="col-12 col-lg-10">
-        <div class="text-h4 q-mb-lg">Search & Results Platform</div>
+  <q-layout view="lHh Lpr lFf">
+    <q-page-container>
+      <q-page padding>
+        <div class="row justify-center">
+          <div class="col-12 col-lg-10">
+            <div class="text-h4 q-mb-lg">Search & Results Platform</div>
 
-        <SearchBar @search="executeSearch" />
+            <SearchBar @search="executeSearch" />
 
-        <FilterPanel
-          :filters="store.filters"
-          :sort="store.sort"
-          @filters-change="changeFilters"
-          @sort-change="changeSort"
-        />
-
-        <!-- Loading -->
-        <div v-if="store.state.status === 'loading'" class="q-pa-xl text-center">
-          <q-spinner size="40px" />
-
-          <div class="q-mt-md">Searching...</div>
-        </div>
-
-        <!-- Error -->
-        <q-banner
-          v-else-if="store.state.status === 'error'"
-          data-testid="error-state"
-          class="bg-negative text-white q-mt-lg"
-        >
-          {{ store.state.error }}
-        </q-banner>
-
-        <!-- Empty -->
-        <div
-          v-else-if="store.state.status === 'empty'"
-          data-testid="empty-state"
-          class="q-pa-xl text-center"
-        >
-          No results found.
-        </div>
-
-        <!-- Results -->
-        <template v-else-if="store.state.status === 'success'">
-          <div class="row justify-between items-center q-mt-lg">
-            <div>{{ store.totalResults }} results</div>
-
-            <div>Page {{ store.page }} of {{ store.totalPages }}</div>
-          </div>
-
-          <ResultsList :results="results" />
-
-          <div class="row justify-center q-mt-lg">
-            <q-pagination
-              :model-value="store.page"
-              :max="store.totalPages"
-              @update:model-value="changePage"
+            <FilterPanel
+              :filters="store.filters"
+              :sort="store.sort"
+              @filters-change="changeFilters"
+              @sort-change="changeSort"
             />
+
+            <!-- Loading -->
+            <div v-if="store.state.status === 'loading'" class="q-pa-xl text-center">
+              <q-spinner size="40px" />
+
+              <div class="q-mt-md">Searching...</div>
+            </div>
+
+            <!-- Error -->
+            <q-banner
+              v-else-if="store.state.status === 'error'"
+              data-testid="error-state"
+              class="bg-negative text-white q-mt-lg"
+            >
+              {{ store.state.error }}
+            </q-banner>
+
+            <!-- Empty -->
+            <div
+              v-else-if="store.state.status === 'empty'"
+              data-testid="empty-state"
+              class="q-pa-xl text-center"
+            >
+              No results found.
+            </div>
+
+            <!-- Results -->
+            <template v-else-if="store.state.status === 'success'">
+              <div class="row justify-between items-center q-mt-lg">
+                <div>{{ store.totalResults }} results</div>
+
+                <div>Page {{ store.page }} of {{ store.totalPages }}</div>
+              </div>
+
+              <ResultsList :results="results" />
+
+              <div class="row justify-center q-mt-lg">
+                <q-pagination
+                  :model-value="store.page"
+                  :max="store.totalPages"
+                  @update:model-value="changePage"
+                />
+              </div>
+            </template>
           </div>
-        </template>
-      </div>
-    </div>
-  </q-page>
+        </div>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
