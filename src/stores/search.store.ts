@@ -3,7 +3,7 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 
-import { searchService } from 'src/services/search.service';
+import { searchService } from '@/services/search.service';
 
 import type {
   AsyncState,
@@ -12,7 +12,7 @@ import type {
   SearchResponse,
   SearchResult,
   Sort,
-} from 'src/types/search';
+} from '@/types/search';
 
 /**
  * The cache stores COMPLETE API responses against an exact request key.

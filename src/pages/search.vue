@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import SearchBar from 'src/components/SearchBar.vue';
 import FilterPanel from 'src/components/FilterPanel.vue';
 import ResultsList from 'src/components/ResultsList.vue';
 
-import { useSearchStore } from 'src/stores/search.store';
+import { useSearchStore } from '@/stores/search.store';
 
-import type { Filter, Sort } from 'src/types/search';
+import type { Filter, Sort } from '@/types/search';
 
 const store = useSearchStore();
 

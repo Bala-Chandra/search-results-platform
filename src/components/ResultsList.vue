@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SearchResult } from 'src/types/search';
+import type { SearchResult } from '@/types/search';
 
 defineProps<{
   results: SearchResult[];

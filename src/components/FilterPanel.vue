@@ -1,47 +1,9 @@
-<script setup lang="ts">
-import type { Filter, Sort } from 'src/types/search'
-
-defineProps<{
-  filters: Filter[]
-  sort: Sort
-}>()
-
-const emit = defineEmits<{
-  filtersChange: [filters: Filter[]]
-  sortChange: [sort: Sort]
-}>()
-
-function updateCategory(category: string) {
-  if (!category) {
-    emit('filtersChange', [])
-    return
-  }
-
-  emit('filtersChange', [
-    {
-      field: 'category',
-      value: category,
-    },
-  ])
-}
-
-function updateSort(value: string) {
-  const [field, direction] = value.split('-') as [
-    Sort['field'],
-    Sort['direction'],
-  ]
-
-  emit('sortChange', {
-    field,
-    direction,
-  })
-}
-</script>
-
+```vue
 <template>
   <div class="row q-col-gutter-md q-mt-md">
     <div class="col-12 col-md-4">
       <q-select
+        v-model="selectedCategory"
         data-testid="category-filter"
         label="Category"
         outlined
@@ -53,6 +15,7 @@ function updateSort(value: string) {
 
     <div class="col-12 col-md-4">
       <q-select
+        v-model="selectedSort"
         data-testid="sort-select"
         label="Sort"
         outlined
@@ -70,3 +33,36 @@ function updateSort(value: string) {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+import type { Filter, Sort } from '@/types/search';
+
+const props = defineProps<{
+  filters: Filter[];
+  sort: Sort;
+}>();
+
+const emit = defineEmits<{
+  'update:filters': [filters: Filter[]];
+  'update:sort': [sort: Sort];
+}>();
+
+const selectedCategory = ref(
+  props.filters.find((filter) => filter.field === 'category')?.value ?? null,
+);
+
+const selectedSort = ref(props.sort);
+
+const updateCategory = (value: string | null) => {
+  const filters = value ? [{ field: 'category', value }] : [];
+
+  emit('update:filters', filters);
+};
+
+const updateSort = (value: Sort) => {
+  emit('update:sort', value);
+};
+</script>
+```
